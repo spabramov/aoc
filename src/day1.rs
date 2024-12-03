@@ -1,49 +1,50 @@
 use crate::utils::read_lines;
 
-use itertools::izip;
+use anyhow::anyhow;
+use itertools::{izip, Itertools};
 use std::collections::HashMap;
 
-pub fn distance(file_path: &str) -> Result<i32, anyhow::Error> {
-    let mut list1: Vec<i32> = vec![];
-    let mut list2: Vec<i32> = vec![];
+pub fn distance(file_path: &str) -> anyhow::Result<i32> {
+    let (mut list1, mut list2): (Vec<i32>, Vec<i32>) = read_lines(file_path)?
+        .flatten()
+        .map(|line| -> anyhow::Result<(i32, i32)> {
+            let (id1, id2) = line
+                .split_once(" ")
+                .ok_or(anyhow!("numbers must be separated by ' '"))?;
 
-    for line in read_lines(file_path)?.flatten() {
-        let (id1, id2) = line
-            .split_once(" ")
-            .expect("numbers must be separated by ' '");
-        let id1: i32 = id1.trim().parse().expect("not an iteger");
-        let id2: i32 = id2.trim().parse().expect("not an iteger");
-
-        list1.push(id1);
-        list2.push(id2);
-    }
+            Ok((id1.parse()?, id2.trim().parse()?))
+        })
+        .process_results(|iter| iter.unzip())?;
 
     list1.sort();
     list2.sort();
 
-    let sum = izip!(list1, list2).fold(0, |acc, (left, right)| acc + (left - right).abs());
+    let sum = izip!(list1, list2).fold(0, |sum, (left, right)| sum + (left - right).abs());
 
     Ok(sum)
 }
 
-pub fn similarity(file_path: &str) -> Result<i32, anyhow::Error> {
-    let mut list1: Vec<i32> = vec![];
-    let mut map2: HashMap<i32, i32> = HashMap::new();
+pub fn similarity(file_path: &str) -> anyhow::Result<i32> {
+    let mut map = HashMap::<i32, i32>::new();
+    let list = read_lines(file_path)?
+        .flatten()
+        .map(|line| -> anyhow::Result<i32> {
+            let (id1, id2) = line
+                .split_once(" ")
+                .ok_or(anyhow!("numbers must be separated by ' '"))?;
 
-    for line in read_lines(file_path)?.flatten() {
-        let (id1, id2) = line
-            .split_once(" ")
-            .expect("numbers must be separated by ' '");
-        let id1: i32 = id1.trim().parse().expect("not an iteger");
-        let id2: i32 = id2.trim().parse().expect("not an iteger");
+            let id1 = id1.parse()?;
+            let id2 = id2.trim().parse()?;
 
-        list1.push(id1);
-        *map2.entry(id2).or_insert(0) += 1;
-    }
+            *map.entry(id2).or_insert(0) += 1;
 
-    let sum = list1
+            Ok(id1)
+        })
+        .collect::<anyhow::Result<Vec<_>>>()?;
+
+    let sum = list
         .iter()
-        .fold(0, |acc, val| acc + val * map2.get(val).unwrap_or(&0));
+        .fold(0, |acc, val| acc + val * map.get(val).unwrap_or(&0));
 
     Ok(sum)
 }
