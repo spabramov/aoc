@@ -50,7 +50,7 @@ pub fn similarity(file_path: &str) -> anyhow::Result<i32> {
 }
 
 #[cfg(test)]
-mod tests {
+mod test {
 
     #[test]
     fn distance() {

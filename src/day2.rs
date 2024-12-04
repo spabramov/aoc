@@ -60,7 +60,7 @@ pub fn safe_levels_with_dampener(file_path: &str) -> Result<usize, anyhow::Error
         .filter(|x| *x)
         .count())
 }
-mod tests {
+mod test {
 
     #[test]
     fn one() {
