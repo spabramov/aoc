@@ -2,15 +2,10 @@ use std::num::ParseIntError;
 
 use crate::utils::read_lines;
 
-#[derive(Debug)]
-enum Dir {
-    Asc,
-    Desc,
-}
 fn parse_levels(s: &str) -> Result<Vec<i32>, ParseIntError> {
-    Ok(s.split(" ")
+    s.split(' ')
         .map(|x| x.parse::<i32>())
-        .collect::<Result<Vec<i32>, _>>()?)
+        .collect::<Result<Vec<i32>, _>>()
 }
 
 pub fn is_safe(levels: &Vec<i32>) -> bool {
@@ -35,19 +30,18 @@ pub fn is_safe_with_dampener(levels: &Vec<i32>) -> bool {
     }
 
     (0..levels.len())
-        .filter(|i| {
+        .map(|i| {
             let mut variation: Vec<i32> = Vec::new();
-            variation.extend_from_slice(&levels[0..*i]);
+            variation.extend_from_slice(&levels[0..i]);
             variation.extend_from_slice(&levels[i + 1..]);
-            is_safe(&variation)
+            variation
         })
-        .next()
-        .is_some()
+        .any(|l| is_safe(&l))
 }
 
-fn safe_levels(file_path: &str) -> Result<usize, anyhow::Error> {
+pub fn safe_levels(file_path: &str) -> Result<usize, anyhow::Error> {
     Ok(read_lines(file_path)?
-        .flatten()
+        .map_while(|line| line.ok())
         .map(|x| parse_levels(&x))
         .map(|x| x.map(|i| is_safe(&i)))
         .collect::<Result<Vec<bool>, _>>()?
@@ -56,9 +50,9 @@ fn safe_levels(file_path: &str) -> Result<usize, anyhow::Error> {
         .count())
 }
 
-fn safe_levels_with_dampener(file_path: &str) -> Result<usize, anyhow::Error> {
+pub fn safe_levels_with_dampener(file_path: &str) -> Result<usize, anyhow::Error> {
     Ok(read_lines(file_path)?
-        .flatten()
+        .map_while(|line| line.ok())
         .map(|x| parse_levels(&x))
         .map(|x| x.map(|i| is_safe_with_dampener(&i)))
         .collect::<Result<Vec<bool>, _>>()?
@@ -67,17 +61,16 @@ fn safe_levels_with_dampener(file_path: &str) -> Result<usize, anyhow::Error> {
         .count())
 }
 mod tests {
-    use super::*;
 
     #[test]
     fn one() {
-        let value = safe_levels("data/2.txt").unwrap();
+        let value = super::safe_levels("data/2.txt").unwrap();
         assert!(value == 299, "{value:?}")
     }
 
     #[test]
     fn two() {
-        let value = safe_levels_with_dampener("data/2.txt").unwrap();
+        let value = super::safe_levels_with_dampener("data/2.txt").unwrap();
         assert!(value == 364, "{value:?}")
     }
 }

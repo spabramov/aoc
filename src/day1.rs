@@ -6,10 +6,10 @@ use std::collections::HashMap;
 
 pub fn distance(file_path: &str) -> anyhow::Result<i32> {
     let (mut list1, mut list2): (Vec<i32>, Vec<i32>) = read_lines(file_path)?
-        .flatten()
+        .map_while(|line| line.ok())
         .map(|line| -> anyhow::Result<(i32, i32)> {
             let (id1, id2) = line
-                .split_once(" ")
+                .split_once(' ')
                 .ok_or(anyhow!("numbers must be separated by ' '"))?;
 
             Ok((id1.parse()?, id2.trim().parse()?))
@@ -27,10 +27,10 @@ pub fn distance(file_path: &str) -> anyhow::Result<i32> {
 pub fn similarity(file_path: &str) -> anyhow::Result<i32> {
     let mut map = HashMap::<i32, i32>::new();
     let list = read_lines(file_path)?
-        .flatten()
+        .map_while(|line| line.ok())
         .map(|line| -> anyhow::Result<i32> {
             let (id1, id2) = line
-                .split_once(" ")
+                .split_once(' ')
                 .ok_or(anyhow!("numbers must be separated by ' '"))?;
 
             let id1 = id1.parse()?;
@@ -52,17 +52,15 @@ pub fn similarity(file_path: &str) -> anyhow::Result<i32> {
 #[cfg(test)]
 mod tests {
 
-    use super::*;
-
     #[test]
-    fn one() {
-        let value = distance("data/1.txt").unwrap();
+    fn distance() {
+        let value = super::distance("data/1.txt").unwrap();
         assert!(value == 1530215, "{value:?}")
     }
 
     #[test]
-    fn two() {
-        let value = similarity("data/1.txt").unwrap();
+    fn similarity() {
+        let value = super::similarity("data/1.txt").unwrap();
         assert!(value == 26800609, "{value:?}")
     }
 }
