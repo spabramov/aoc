@@ -87,11 +87,11 @@ mod test {
     #[test]
     fn ceres_search() {
         let value = super::ceres_search("data/4.txt").unwrap();
-        assert!(value == 2458, "total={value}")
+        assert_eq!(value, 2458)
     }
     #[test]
     fn ceres_search_x_mas() {
         let value = super::ceres_search_x_mas("data/4.txt").unwrap();
-        assert!(value == 1945, "total={value}")
+        assert_eq!(value, 1945)
     }
 }

@@ -53,13 +53,13 @@ mod test {
     fn mull_it_over() {
         let value = super::sum_of_muls("data/3.txt").unwrap();
 
-        assert!(value == 191183308, "total={value:?}")
+        assert_eq!(value, 191183308)
     }
 
     #[test]
     fn mull_it_over_and_dont() {
         let value = super::sum_of_muls_and_donts("data/3.txt").unwrap();
 
-        assert!(value == 92082041, "total={value:?}")
+        assert_eq!(value, 92082041)
     }
 }

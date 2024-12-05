@@ -55,12 +55,12 @@ mod test {
     #[test]
     fn distance() {
         let value = super::distance("data/1.txt").unwrap();
-        assert!(value == 1530215, "{value:?}")
+        assert_eq!(value, 1530215)
     }
 
     #[test]
     fn similarity() {
         let value = super::similarity("data/1.txt").unwrap();
-        assert!(value == 26800609, "{value:?}")
+        assert_eq!(value, 26800609)
     }
 }
