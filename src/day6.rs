@@ -130,14 +130,14 @@ mod test {
 
     #[test]
     fn guard_gallivant() {
-        let value = super::guard_gallivant("data/6.txt").unwrap().len();
+        let value = super::guard_gallivant("data/6.in").unwrap().len();
 
         assert_eq!(value, 4988);
     }
 
     #[test]
     fn guard_gallivant_loop() {
-        let value = super::guard_gallivant_loops("data/6.txt").unwrap();
+        let value = super::guard_gallivant_loops("data/6.in").unwrap();
 
         assert_eq!(value, 1697);
     }

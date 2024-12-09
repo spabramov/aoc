@@ -64,13 +64,13 @@ mod test {
 
     #[test]
     fn one() {
-        let value = super::safe_levels("data/2.txt").unwrap();
+        let value = super::safe_levels("data/2.in").unwrap();
         assert_eq!(value, 299)
     }
 
     #[test]
     fn two() {
-        let value = super::safe_levels_with_dampener("data/2.txt").unwrap();
+        let value = super::safe_levels_with_dampener("data/2.in").unwrap();
         assert_eq!(value, 364)
     }
 }

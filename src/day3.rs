@@ -51,14 +51,14 @@ mod test {
 
     #[test]
     fn mull_it_over() {
-        let value = super::sum_of_muls("data/3.txt").unwrap();
+        let value = super::sum_of_muls("data/3.in").unwrap();
 
         assert_eq!(value, 191183308)
     }
 
     #[test]
     fn mull_it_over_and_dont() {
-        let value = super::sum_of_muls_and_donts("data/3.txt").unwrap();
+        let value = super::sum_of_muls_and_donts("data/3.in").unwrap();
 
         assert_eq!(value, 92082041)
     }
