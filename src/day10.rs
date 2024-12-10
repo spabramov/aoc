@@ -14,16 +14,13 @@ pub fn read_map(filename: &str) -> anyhow::Result<TrailMap> {
         .collect())
 }
 
-fn try_step(loc: Location, map: &TrailMap, dir: Direction) -> Option<Location> {
-    let new_loc = try_move(loc, dir)?;
+fn try_step(loc: &Location, map: &TrailMap, dir: Direction) -> Option<Location> {
+    let new = try_move(loc, dir)?;
 
-    if new_loc.0 >= map.len()
-        || new_loc.1 >= map[new_loc.0].len()
-        || map[loc.0][loc.1] + 1 != map[new_loc.0][new_loc.1]
-    {
-        None
+    if new.in_bounds(map) && map[loc.0][loc.1] + 1 == map[new.0][new.1] {
+        Some(new)
     } else {
-        Some(new_loc)
+        None
     }
 }
 
@@ -34,7 +31,7 @@ pub fn add_trail_peaks(start: Location, map: &TrailMap, set: &mut HashSet<Locati
         [(0, 1), (0, -1), (1, 0), (-1, 0)]
             .into_iter()
             .for_each(|dir| {
-                if let Some(loc) = try_step(start, map, dir) {
+                if let Some(loc) = try_step(&start, map, dir) {
                     add_trail_peaks(loc, map, set);
                 };
             });
@@ -48,7 +45,7 @@ pub fn count_trails(start: Location, map: &TrailMap) -> usize {
         [(0, 1), (0, -1), (1, 0), (-1, 0)]
             .into_iter()
             .map(|dir| {
-                if let Some(loc) = try_step(start, map, dir) {
+                if let Some(loc) = try_step(&start, map, dir) {
                     count_trails(loc, map)
                 } else {
                     0
@@ -67,13 +64,13 @@ mod test {
 
     #[test]
     fn test_step() {
-        let loc = (0, 0);
+        let loc = Location(0, 0);
         let map = vec![vec![1, 2], vec![3, 4]];
 
-        assert!(matches!(try_step(loc, &map, (1, 0)), None));
-        assert!(matches!(try_step(loc, &map, (0, 1)), Some((0, 1))));
-        assert!(matches!(try_step(loc, &map, (-1, 0)), None));
-        assert!(matches!(try_step(loc, &map, (0, -1)), None));
+        assert!(matches!(try_step(&loc, &map, (1, 0)), None));
+        assert!(matches!(try_step(&loc, &map, (0, 1)), Some(Location(0, 1))));
+        assert!(matches!(try_step(&loc, &map, (-1, 0)), None));
+        assert!(matches!(try_step(&loc, &map, (0, -1)), None));
     }
 
     #[test]
@@ -88,7 +85,7 @@ mod test {
                     .map(|(col, &val)| {
                         if val == 0 {
                             let mut peaks: HashSet<Location> = HashSet::new();
-                            add_trail_peaks((row, col), &input, &mut peaks);
+                            add_trail_peaks(Location(row, col), &input, &mut peaks);
                             peaks.len()
                         } else {
                             0
@@ -112,7 +109,7 @@ mod test {
                     .enumerate()
                     .map(|(col, &val)| {
                         (val == 0)
-                            .then_some(count_trails((row, col), &input))
+                            .then_some(count_trails(Location(row, col), &input))
                             .unwrap_or(0)
                     })
                     .sum::<usize>()
