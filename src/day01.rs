@@ -54,13 +54,13 @@ mod test {
 
     #[test]
     fn distance() {
-        let value = super::distance("data/1.in").unwrap();
+        let value = super::distance("data/01.in").unwrap();
         assert_eq!(value, 1530215)
     }
 
     #[test]
     fn similarity() {
-        let value = super::similarity("data/1.in").unwrap();
+        let value = super::similarity("data/01.in").unwrap();
         assert_eq!(value, 26800609)
     }
 }

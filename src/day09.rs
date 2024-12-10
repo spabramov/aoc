@@ -132,7 +132,7 @@ mod test {
 
     #[test]
     fn disk_fragmenter() {
-        let mut content = super::read(&read_to_string("data/9.in").unwrap()).unwrap();
+        let mut content = super::read(&read_to_string("data/09.in").unwrap()).unwrap();
         super::defragment(&mut content);
         let value = super::checksum(&content);
 
@@ -140,10 +140,10 @@ mod test {
     }
     #[test]
     fn disk_fragmenter_whole() {
-        let mut content = super::read(&read_to_string("data/9.in").unwrap()).unwrap();
+        let mut content = super::read(&read_to_string("data/09.in").unwrap()).unwrap();
         super::defragment_whole(&mut content);
         let value = super::checksum(&content);
 
-        assert_eq!(value, 0);
+        assert_eq!(value, 6382582136592);
     }
 }

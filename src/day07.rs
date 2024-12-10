@@ -67,13 +67,13 @@ mod test {
 
     #[test]
     fn bridge_repair() {
-        let value = super::bridge_repair("data/7.in").unwrap();
+        let value = super::bridge_repair("data/07.in").unwrap();
         assert_eq!(value, 1038838357795);
     }
 
     #[test]
     fn bridge_repair_concat() {
-        let value = super::bridge_repair_concat_rec("data/7.in").unwrap();
+        let value = super::bridge_repair_concat_rec("data/07.in").unwrap();
         assert_eq!(value, 254136560217241);
     }
 }

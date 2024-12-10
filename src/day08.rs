@@ -91,15 +91,15 @@ mod test {
 
     #[test]
     fn resonant_collinearity() {
-        let value = super::resonant_collinearity("data/8.in").unwrap();
+        let value = super::resonant_collinearity("data/08.in").unwrap();
 
         assert_eq!(value, 364);
     }
 
     #[test]
     fn resonant_collinearity_harm() {
-        let value = super::resonant_collinearity_harm("data/8.in").unwrap();
+        let value = super::resonant_collinearity_harm("data/08.in").unwrap();
 
-        assert_eq!(value, 0);
+        assert_eq!(value, 1231);
     }
 }

@@ -65,13 +65,13 @@ mod test {
 
     #[test]
     fn middle_numbers() {
-        let value = super::middle_numbers("data/5.in").unwrap();
+        let value = super::middle_numbers("data/05.in").unwrap();
 
         assert_eq!(value, 4462)
     }
     #[test]
     fn middle_numbers_unordered() {
-        let value = super::middle_numbers_of_unordered("data/5.in").unwrap();
+        let value = super::middle_numbers_of_unordered("data/05.in").unwrap();
 
         assert_eq!(value, 6767)
     }

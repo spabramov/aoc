@@ -86,12 +86,12 @@ mod test {
 
     #[test]
     fn ceres_search() {
-        let value = super::ceres_search("data/4.in").unwrap();
+        let value = super::ceres_search("data/04.in").unwrap();
         assert_eq!(value, 2458)
     }
     #[test]
     fn ceres_search_x_mas() {
-        let value = super::ceres_search_x_mas("data/4.in").unwrap();
+        let value = super::ceres_search_x_mas("data/04.in").unwrap();
         assert_eq!(value, 1945)
     }
 }
