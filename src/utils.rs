@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
 
-#[derive(Eq, Hash, PartialEq)]
+#[derive(Eq, Hash, PartialEq, Debug, Clone)]
 pub struct Location(pub usize, pub usize);
 pub type Direction = (isize, isize);
 

@@ -75,8 +75,6 @@ pub fn read(input: &str) -> anyhow::Result<Vec<Option<usize>>> {
 mod test {
     use std::fs::read_to_string;
 
-    use itertools::Itertools;
-
     fn fmt(input: &Vec<Option<usize>>) -> String {
         input
             .iter()
@@ -84,6 +82,7 @@ mod test {
                 Some(d) => format!("{d}"),
                 None => String::from("."),
             })
+            .collect::<Vec<_>>()
             .join("")
     }
 

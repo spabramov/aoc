@@ -1,7 +1,6 @@
 use crate::utils::read_lines;
 
 use anyhow::anyhow;
-use itertools::{izip, Itertools};
 use std::collections::HashMap;
 
 pub fn distance(file_path: &str) -> anyhow::Result<i32> {
@@ -14,12 +13,16 @@ pub fn distance(file_path: &str) -> anyhow::Result<i32> {
 
             Ok((id1.parse()?, id2.trim().parse()?))
         })
-        .process_results(|iter| iter.unzip())?;
+        .map_while(|r| r.ok())
+        .unzip();
 
     list1.sort();
     list2.sort();
 
-    let sum = izip!(list1, list2).fold(0, |sum, (left, right)| sum + (left - right).abs());
+    let sum = list1
+        .iter()
+        .zip(list2)
+        .fold(0, |sum, (left, right)| sum + (left - right).abs());
 
     Ok(sum)
 }
